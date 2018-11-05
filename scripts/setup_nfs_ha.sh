@@ -60,7 +60,7 @@ EOF
 function setup_drbd_module_and_tools
 {
     # Insall drbd-utils and load the module
-    apt install drbd-utils
+    apt -y install drbd-utils
     modprobe drbdd
 }
 
