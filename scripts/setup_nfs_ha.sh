@@ -59,24 +59,9 @@ EOF
 
 function setup_drbd_module_and_tools
 {
-    # We currently have to build the DRBD kernel module, as it's not included
-    # in the default linux-azure kernels or in any Azure extra packages.
-    # We should use the packaged DRBD module once Azure starts releasing
-    # extra modules packages that include DRBD module.
-
-    pushd /tmp
-    git clone http://github.com/LINBIT/drbd-9.0
-    git clone http://github.com/LINBIT/drbd-utils
-    cd drbd-9.0
-    make && make install
-    modprobe drbd
-    cd ../drbd-utils
-    ./autogen.sh
-    ./configure --prefix=/usr --localstatedir=/var --sysconfdir=/etc
-    make tools && make install-tools
-    cd ..
-    rm -rf drbd-9.0 drbd-utils
-    popd
+    # Insall drbd-utils and load the module
+    apt install drbd-utils
+    modprobe drbdd
 }
 
 function setup_drbd_with_disk
