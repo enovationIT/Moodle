@@ -61,7 +61,7 @@ function setup_drbd_module_and_tools
 {
     # Insall drbd-utils and load the module
     apt -y install drbd-utils
-    modprobe drbdd
+    modprobe drbd
 }
 
 function setup_drbd_with_disk
