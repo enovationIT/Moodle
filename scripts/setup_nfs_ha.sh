@@ -21,7 +21,7 @@ MY_IP=$(hostname -i)
 function setup_required_packages
 {
     apt update
-    apt -y install build-essential autoconf flex nfs-kernel-server corosync pacemaker resource-agents
+    apt -y install build-essential autoconf flex nfs-kernel-server corosync pacemaker resource-agents drbd-utils
 
     # Shouldn't let systemd start nfs-kernel-server (Pacemaker should do that)
     systemctl stop nfs-kernel-server
@@ -59,8 +59,7 @@ EOF
 
 function setup_drbd_module_and_tools
 {
-    # Insall drbd-utils and load the module
-    apt -y install drbd-utils
+    # Load the module
     modprobe drbd
 }
 
@@ -109,7 +108,6 @@ EOF
     # Initialize DRBD's metadata and bring up the device on both nodes
     drbdadm create-md $drbd_resource_name
     drbdadm up $drbd_resource_name
-    drbdadm status
 
     # On the master (initially node 1) only, force DRBD into Primary and create an ext4 file system on the DRBD device
     if [ "$MY_IP" = "$NODE1IP" ]; then
